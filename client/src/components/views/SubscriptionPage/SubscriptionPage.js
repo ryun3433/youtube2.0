@@ -5,17 +5,23 @@ import moment from "moment";
 const { Title } = Typography;
 const { Meta } = Card;
 
-function LandingPage() {
+function SubscriptionPage() {
   const [Video, setVideo] = useState([]);
 
   useEffect(() => {
-    Axios.get("/api/video/getVideos").then((res) => {
-      if (res.data.success) {
-        setVideo(res.data.videos);
-      } else {
-        alert("비디오 가져오기를 실패했습니다.");
+    const subscriptionVariable = {
+      userFrom: localStorage.getItem("userId"),
+    };
+
+    Axios.post("/api/video/getSubscriptionVideo", subscriptionVariable).then(
+      (res) => {
+        if (res.data.success) {
+          setVideo(res.data.videos);
+        } else {
+          alert("비디오 가져오기를 실패했습니다.");
+        }
       }
-    });
+    );
   }, []);
 
   const renderCards = Video.map((video, index) => {
@@ -77,4 +83,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default SubscriptionPage;
